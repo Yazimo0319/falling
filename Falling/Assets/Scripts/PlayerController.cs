@@ -4,25 +4,28 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     private Rigidbody2D rb;
+    private Camera mainCamera;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        mainCamera = Camera.main;
     }
 
     void Update()
     {
-        float horizontalInput = 0f;
+        // 把滑鼠螢幕座標轉成世界座標
+        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
-        // 只用 A / D 鍵
-        if (Input.GetKey(KeyCode.A)) horizontalInput = -1f;
-        else if (Input.GetKey(KeyCode.D)) horizontalInput = 1f;
+        // 只取 X 座標，Y 維持不動
+        float targetX = mouseWorldPos.x;
+        float currentX = rb.position.x;
 
-        float deltaX = horizontalInput * moveSpeed * Time.deltaTime;
-        float nextX = rb.position.x + deltaX;
+        // 插值移動使動作更平滑（可選）
+        float newX = Mathf.Lerp(currentX, targetX, moveSpeed * Time.deltaTime);
 
-        // 沒有 Clamp，完全自由移動
-        rb.MovePosition(new Vector2(nextX, rb.position.y));
+        // 實際移動位置
+        rb.MovePosition(new Vector2(newX, rb.position.y));
     }
 
     void OnCollisionEnter2D(Collision2D collision)

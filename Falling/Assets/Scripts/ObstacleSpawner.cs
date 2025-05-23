@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
+    [Header("障礙物設定")]
     public GameObject[] obstaclePrefabs;
-    
-    [Header("生成範圍")]
-    public float minX = -4f;
-    public float maxX = 4f;
-    public float minY = -6f;
-    public float maxY = 6f;
+
+    [Header("左右牆物件")]
+    public Transform leftWall;
+    public Transform rightWall;
+
+    [Header("生成 Y 範圍")]
+    public float minY = 1000f;
+    public float maxY = 1300f;
 
     [Header("生成頻率（秒）")]
     public float spawnRate = 2f;
+
+    [Header("障礙物存活秒數（0 = 不刪除）")]
+    public float obstacleLifetime = 5f;
 
     private float nextSpawnTime;
 
@@ -33,17 +39,26 @@ public class ObstacleSpawner : MonoBehaviour
 
     void SpawnObstacle()
     {
-        // 隨機 X, Y 座標
-        float randomX = Random.Range(minX, maxX);
+        if (obstaclePrefabs.Length == 0 || leftWall == null || rightWall == null) return;
+
+        // 根據左右牆位置與寬度，自動算生成範圍
+        float leftEdge = leftWall.position.x + leftWall.localScale.x / 2f;
+        float rightEdge = rightWall.position.x - rightWall.localScale.x / 2f;
+
+        float randomX = Random.Range(leftEdge, rightEdge);
         float randomY = Random.Range(minY, maxY);
+        Vector3 spawnPos = new Vector3(randomX, randomY, 0f);
 
-        Vector3 spawnPosition = new Vector3(randomX, randomY, 0f);
+        // 隨機挑一個障礙物
+        int index = Random.Range(0, obstaclePrefabs.Length);
+        GameObject newObstacle = Instantiate(obstaclePrefabs[index], spawnPos, Quaternion.identity);
 
-        // 隨機選擇障礙物預製體
-        int randomIndex = Random.Range(0, obstaclePrefabs.Length);
-        GameObject selectedObstacle = obstaclePrefabs[randomIndex];
+        // 設定存活時間
+        if (obstacleLifetime > 0f)
+        {
+            Destroy(newObstacle, obstacleLifetime);
+        }
 
-        // 生成障礙物
-        Instantiate(selectedObstacle, spawnPosition, Quaternion.identity);
+        Debug.Log("Spawned at: " + spawnPos);
     }
 }

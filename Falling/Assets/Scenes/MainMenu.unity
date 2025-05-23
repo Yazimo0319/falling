@@ -153,11 +153,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstaclePrefabs:
   - {fileID: 2139060495199614339, guid: bb60a0c2c0fb29b4d8441ea753e1797b, type: 3}
-  minX: 304
-  maxX: 783
-  minY: 0
-  maxY: 1490
-  spawnRate: 2
+  leftWall: {fileID: 1511982383}
+  rightWall: {fileID: 2071158132}
+  minY: 100
+  maxY: 1300
+  spawnRate: 0.5
+  obstacleLifetime: 5
 --- !u!4 &285515460
 Transform:
   m_ObjectHideFlags: 0
@@ -167,7 +168,7 @@ Transform:
   m_GameObject: {fileID: 285515458}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 544, y: 904.1691, z: 388.9294}
+  m_LocalPosition: {x: 291, y: 1432, z: 388.9294}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -556,7 +557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb33d66bd9f2974a81595ea0d82e921, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 800
+  moveSpeed: 1
 --- !u!61 &858314967
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -709,7 +710,7 @@ GameObject:
   - component: {fileID: 1130119724}
   m_Layer: 0
   m_Name: ground
-  m_TagString: ground
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
