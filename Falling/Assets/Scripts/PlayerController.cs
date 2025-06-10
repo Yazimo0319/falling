@@ -26,17 +26,18 @@ public class PlayerController : MonoBehaviour
 
         // 實際移動位置
         rb.MovePosition(new Vector2(newX, rb.position.y));
+        
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            GameManager.instance.GameOver(true);
+            GameManager.Instance.GameOver(true);
         }
         else if (collision.gameObject.CompareTag("Ground"))
         {
-            GameManager.instance.GameOver(false);
+            GameManager.Instance.GameOver(false);
         }
     }
 }

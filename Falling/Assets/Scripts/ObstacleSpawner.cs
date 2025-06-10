@@ -30,6 +30,12 @@ public class ObstacleSpawner : MonoBehaviour
 
     void Update()
     {
+        // ✅ 如果遊戲結束（不論是死亡或掉到地板）就不再生成
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver)
+        {
+            return;
+        }
+
         if (Time.time >= nextSpawnTime)
         {
             SpawnObstacle();
@@ -41,7 +47,6 @@ public class ObstacleSpawner : MonoBehaviour
     {
         if (obstaclePrefabs.Length == 0 || leftWall == null || rightWall == null) return;
 
-        // 根據左右牆位置與寬度，自動算生成範圍
         float leftEdge = leftWall.position.x + leftWall.localScale.x / 2f;
         float rightEdge = rightWall.position.x - rightWall.localScale.x / 2f;
 
@@ -49,11 +54,9 @@ public class ObstacleSpawner : MonoBehaviour
         float randomY = Random.Range(minY, maxY);
         Vector3 spawnPos = new Vector3(randomX, randomY, 0f);
 
-        // 隨機挑一個障礙物
         int index = Random.Range(0, obstaclePrefabs.Length);
         GameObject newObstacle = Instantiate(obstaclePrefabs[index], spawnPos, Quaternion.identity);
 
-        // 設定存活時間
         if (obstacleLifetime > 0f)
         {
             Destroy(newObstacle, obstacleLifetime);

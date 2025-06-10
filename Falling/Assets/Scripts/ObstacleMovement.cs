@@ -14,7 +14,7 @@ public class ObstacleMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             Debug.Log("成功接住！遊戲成功！");
-            GameManager.instance.GameOver(false); // 這裡假設 false 是代表成功結束
+            GameManager.Instance.GameOver(false); // 這裡假設 false 是代表成功結束
             Destroy(gameObject); // 移除障礙物
         }
     }
