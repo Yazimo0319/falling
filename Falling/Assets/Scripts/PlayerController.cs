@@ -3,41 +3,56 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    private Rigidbody2D rb;
     private Camera mainCamera;
+    private float fixedY; // 固定 Y 軸位置
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         mainCamera = Camera.main;
+        fixedY = transform.position.y;
     }
 
     void Update()
-    {
-        // 把滑鼠螢幕座標轉成世界座標
-        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+{
+    if (GameManager.Instance != null && GameManager.Instance.isGameOver)
+        return;
 
-        // 只取 X 座標，Y 維持不動
-        float targetX = mouseWorldPos.x;
-        float currentX = rb.position.x;
+    Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+    float targetX = mouseWorldPos.x;
+    float currentX = transform.position.x;
 
-        // 插值移動使動作更平滑（可選）
-        float newX = Mathf.Lerp(currentX, targetX, moveSpeed * Time.deltaTime);
+    float newX = Mathf.Lerp(currentX, targetX, moveSpeed * Time.deltaTime);
 
-        // 實際移動位置
-        rb.MovePosition(new Vector2(newX, rb.position.y));
-        
-    }
+    // 🧩 1. 攝影機可視範圍
+    float halfCamWidth = mainCamera.orthographicSize * mainCamera.aspect;
+    float camCenterX = mainCamera.transform.position.x;
+
+    // 🧩 2. 取得角色的半寬（Collider 或 Sprite）
+    float playerHalfWidth = 0.5f; // 預設值
+    var sr = GetComponent<SpriteRenderer>();
+    if (sr != null)
+        playerHalfWidth = sr.bounds.extents.x;
+
+    // 🧩 3. 限制 newX，讓整個角色都在畫面內
+    float leftLimit = camCenterX - halfCamWidth + playerHalfWidth;
+    float rightLimit = camCenterX + halfCamWidth - playerHalfWidth;
+    newX = Mathf.Clamp(newX, leftLimit, rightLimit);
+
+    transform.position = new Vector3(newX, fixedY, 0f);
+}
+
+
 
     void OnCollisionEnter2D(Collision2D collision)
+{
+    if (collision.gameObject.CompareTag("Obstacle"))
     {
-        if (collision.gameObject.CompareTag("Obstacle"))
-        {
-            GameManager.Instance.GameOver(true);
-        }
-        else if (collision.gameObject.CompareTag("Ground"))
-        {
-            GameManager.Instance.GameOver(false);
-        }
+        GameManager.Instance.GameOver(true); // 撞到障礙物 → 失敗
     }
+    else if (collision.gameObject.CompareTag("Ground"))
+    {
+        GameManager.Instance.GameOver(false); // 掉到地板 → 成功
+    }
+}
+
 }

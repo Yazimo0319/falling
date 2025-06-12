@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/Formal Exam Start.unity
+    guid: d450409f77129f64c93c147cdbb4c360
+  - enabled: 1
+    path: Assets/Scenes/Formal Exam Game.unity
+    guid: 53e2e3b62e3139e499a2d1d07a3bdce8
+  - enabled: 1
+    path: Assets/Scenes/Mock Exam Start.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Mock Exam Game.unity
+    guid: 12e7e28f6203e094fa587e603fa74f38
   m_configObjects: {}

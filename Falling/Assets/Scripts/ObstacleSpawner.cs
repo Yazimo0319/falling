@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
@@ -7,61 +5,56 @@ public class ObstacleSpawner : MonoBehaviour
     [Header("障礙物設定")]
     public GameObject[] obstaclePrefabs;
 
-    [Header("左右牆物件")]
-    public Transform leftWall;
-    public Transform rightWall;
-
-    [Header("生成 Y 範圍")]
-    public float minY = 1000f;
-    public float maxY = 1300f;
-
-    [Header("生成頻率（秒）")]
-    public float spawnRate = 2f;
-
-    [Header("障礙物存活秒數（0 = 不刪除）")]
-    public float obstacleLifetime = 5f;
+    [Header("生成區間設定")]
+    public float startSpawnRate = 1.5f;   // 初始間隔（秒）
+    public float minSpawnRate = 0.5f;     // 最快間隔（越小越快）
 
     private float nextSpawnTime;
 
     void Start()
     {
-        nextSpawnTime = Time.time + spawnRate;
+        nextSpawnTime = Time.time + startSpawnRate;
     }
 
     void Update()
     {
-        // ✅ 如果遊戲結束（不論是死亡或掉到地板）就不再生成
-        if (GameManager.Instance != null && GameManager.Instance.isGameOver)
-        {
+        if (GameManager.Instance == null) return;
+
+        // ⛔ 限時模式：時間結束就不再生成
+        if (GameManager.CurrentMode == "限時" && GameManager.Instance.timeRemaining <= 0f)
             return;
-        }
+
+        // ⛔ 所有模式都共用：遊戲結束不再生成
+        if (GameManager.Instance.isGameOver)
+            return;
 
         if (Time.time >= nextSpawnTime)
         {
             SpawnObstacle();
-            nextSpawnTime = Time.time + spawnRate;
+
+            // 依據遊戲進度加快生成速度（限時模式有效）
+            float t = 0f;
+            if (GameManager.CurrentMode == "限時")
+            {
+                t = 1 - (GameManager.Instance.timeRemaining / GameManager.Instance.gameDuration);
+            }
+
+            float currentRate = Mathf.Lerp(startSpawnRate, minSpawnRate, t);
+            nextSpawnTime = Time.time + currentRate;
         }
     }
 
     void SpawnObstacle()
     {
-        if (obstaclePrefabs.Length == 0 || leftWall == null || rightWall == null) return;
+        if (obstaclePrefabs.Length == 0) return;
 
-        float leftEdge = leftWall.position.x + leftWall.localScale.x / 2f;
-        float rightEdge = rightWall.position.x - rightWall.localScale.x / 2f;
+        // 攝影機邊界內隨機生成
+        float camWidth = Camera.main.orthographicSize * Camera.main.aspect;
+        float randomX = Random.Range(-camWidth, camWidth);
+        float spawnY = -Camera.main.orthographicSize - 2f;
 
-        float randomX = Random.Range(leftEdge, rightEdge);
-        float randomY = Random.Range(minY, maxY);
-        Vector3 spawnPos = new Vector3(randomX, randomY, 0f);
-
+        Vector3 spawnPos = new Vector3(randomX, spawnY, 0f);
         int index = Random.Range(0, obstaclePrefabs.Length);
-        GameObject newObstacle = Instantiate(obstaclePrefabs[index], spawnPos, Quaternion.identity);
-
-        if (obstacleLifetime > 0f)
-        {
-            Destroy(newObstacle, obstacleLifetime);
-        }
-
-        Debug.Log("Spawned at: " + spawnPos);
+        Instantiate(obstaclePrefabs[index], spawnPos, Quaternion.identity);
     }
 }
