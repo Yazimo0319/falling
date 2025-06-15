@@ -510,6 +510,8 @@ MonoBehaviour:
   inputClass: {fileID: 1596658630}
   inputSeat: {fileID: 1550676576}
   inputName: {fileID: 164601333}
+  modeName: "\u9650\u6642"
+  sceneToLoad: Formal Exam Game
 --- !u!114 &296916921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,7 +579,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: c727fe845c2b0e343b85f403996cb5bb, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1500,6 +1502,8 @@ GameObject:
   - component: {fileID: 1656401226}
   - component: {fileID: 1656401225}
   - component: {fileID: 1656401224}
+  - component: {fileID: 1656401227}
+  - component: {fileID: 1656401228}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1581,6 +1585,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1656401227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656401223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71bc95cde8a2d4241a39506479104e72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetAspect: 0.5625
+--- !u!114 &1656401228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656401223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3ead167c5921943b7887e2934a8c27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetWidth: 1080
+  targetHeight: 1920
 --- !u!1 &1717464298
 GameObject:
   m_ObjectHideFlags: 0
@@ -1634,7 +1665,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 1
+  m_MatchWidthOrHeight: 0.8
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96

@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: e2251a2a27ab24846b9cd252e51c4b07
+  - enabled: 1
     path: Assets/Scenes/Formal Exam Start.unity
     guid: d450409f77129f64c93c147cdbb4c360
   - enabled: 1
@@ -17,4 +20,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mock Exam Game.unity
     guid: 12e7e28f6203e094fa587e603fa74f38
+  - enabled: 1
+    path: Assets/Scenes/FormalRankingScene.unity
+    guid: d611efc2874968c4fa0d703f210110d9
+  - enabled: 1
+    path: Assets/Scenes/MockRankingScene.unity
+    guid: 15c23b8b06ba09a448e60a0af18f0d44
   m_configObjects: {}

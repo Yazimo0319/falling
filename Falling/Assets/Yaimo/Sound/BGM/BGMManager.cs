@@ -19,19 +19,20 @@ public class BGMManager : MonoBehaviour
     public float targetVolume = 0.5f;
     public float fadeInDuration = 2f;
 
-    private static BGMManager instance;
-    private int currentTrackIndex = -1;
-    private bool isEndlessMode = false;
     [Header("結算音樂音量設定")]
     public float resultVolume = 0.3f; // 比 targetVolume 小一點
 
+    private static BGMManager instance;
+    private int currentTrackIndex = -1;
+    private bool isEndlessMode = false;
 
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            // ✅ 不再保留跨場景
+            // DontDestroyOnLoad(gameObject); // ❌ 拿掉
         }
         else
         {
@@ -41,8 +42,29 @@ public class BGMManager : MonoBehaviour
 
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
+    }
 
+    void OnEnable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         StartCoroutine(WaitAndPlay());
+    }
+
+    void OnDisable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        // ✅ 只允許在遊戲場景內存在（非成績單場景時銷毀）
+        if (scene.name != "Formal Exam Game" && scene.name != "Mock Exam Game")
+        {
+            if (audioSource != null && audioSource.isPlaying)
+                audioSource.Stop();
+
+            Destroy(gameObject);
+        }
     }
 
     IEnumerator WaitAndPlay()
@@ -76,7 +98,6 @@ public class BGMManager : MonoBehaviour
         }
     }
 
-    // 限時模式播放隨機一首
     private AudioClip GetRandomExamBGM()
     {
         if (examBGMs.Length == 0) return null;
@@ -84,7 +105,6 @@ public class BGMManager : MonoBehaviour
         return examBGMs[index];
     }
 
-    // 無盡模式隨機輪播
     IEnumerator PlayEndlessBGM()
     {
         AudioClip clip = endlessBGMs[Random.Range(0, endlessBGMs.Length)];
@@ -93,40 +113,44 @@ public class BGMManager : MonoBehaviour
     }
 
     public void PlayResultMusic(float score)
-{
-    // 只在限時模式才播放成績音樂
-    if (!isEndlessMode)
     {
-        AudioClip resultClip = score >= 80f ? awardClip : sadClip;
-        PlayClipWithFade(resultClip, resultVolume); // 傳入結算音量
+        if (!isEndlessMode)
+        {
+            AudioClip resultClip = score >= 80f ? awardClip : sadClip;
+            PlayClipWithFade(resultClip, resultVolume);
+        }
     }
-}
-
 
     private void PlayClipWithFade(AudioClip clip, float volume = -1f)
-{
-    if (clip == null) return;
-    StopAllCoroutines();
-    float useVolume = (volume >= 0f) ? volume : targetVolume;
-    StartCoroutine(FadeInClip(clip, useVolume));
-}
-
+    {
+        if (clip == null) return;
+        StopAllCoroutines();
+        float useVolume = (volume >= 0f) ? volume : targetVolume;
+        StartCoroutine(FadeInClip(clip, useVolume));
+    }
 
     IEnumerator FadeInClip(AudioClip clip, float volume)
-{
-    audioSource.volume = 0f;
-    audioSource.clip = clip;
-    audioSource.loop = false;
-    audioSource.Play();
-
-    float t = 0f;
-    while (t < fadeInDuration)
     {
-        t += Time.deltaTime;
-        audioSource.volume = Mathf.Lerp(0f, volume, t / fadeInDuration);
-        yield return null;
-    }
-    audioSource.volume = volume;
-}
+        audioSource.volume = 0f;
+        audioSource.clip = clip;
+        audioSource.loop = false;
+        audioSource.Play();
 
+        float t = 0f;
+        while (t < fadeInDuration)
+        {
+            t += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(0f, volume, t / fadeInDuration);
+            yield return null;
+        }
+        audioSource.volume = volume;
+    }
+
+    public void StopResultMusic()
+    {
+        if (!isEndlessMode && audioSource != null && audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
+    }
 }

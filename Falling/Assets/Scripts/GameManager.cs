@@ -56,11 +56,10 @@ public class GameManager : MonoBehaviour
         {
             timer += Time.deltaTime;
             score = timer;
-
             if (scoreText != null)
                 scoreText.text = $"Score: {score:F2}";
         }
-        else // 限時模式
+        else
         {
             timeRemaining -= Time.deltaTime;
             if (timeRemaining < 0f) timeRemaining = 0f;
@@ -87,14 +86,12 @@ public class GameManager : MonoBehaviour
         if (isGameOver) return;
         isGameOver = true;
 
-        // ✅ 撞到障礙物時先停止背景音樂
         var bgm = FindObjectOfType<BGMManager>();
         if (bgm != null && bgm.audioSource != null)
         {
             bgm.audioSource.Stop();
         }
 
-        // ✅ 播音效並延遲顯示成績
         if (isDead && hitSFX != null && sfxSource != null)
         {
             sfxSource.PlayOneShot(hitSFX);
@@ -114,6 +111,8 @@ public class GameManager : MonoBehaviour
 
     private void ShowScoreReport()
     {
+        SaveScoreRecord();
+
         if (scoreReportPanel != null)
         {
             var report = scoreReportPanel.GetComponent<ScoreReportUI>();
@@ -127,9 +126,66 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("⚠️ ScoreReportPanel 是 null！");
         }
 
-        // ✅ 成績畫面出現時才播放結算 BGM
         FindObjectOfType<BGMManager>()?.PlayResultMusic(score);
     }
+
+    void SaveScoreRecord()
+{
+    PlayerPrefs.SetFloat("LastScore", score);
+
+    string classText = PlayerPrefs.GetString("Class", "三乙");
+    string seatText = PlayerPrefs.GetString("Seat", "99");
+    string nameText = PlayerPrefs.GetString("PlayerName", "匿名考生");
+
+    string userKey = $"{classText}-{seatText}-{nameText}";
+
+    string modeKey = (CurrentMode == "無盡") ? "Mock" : "Formal";
+    int recordCount = PlayerPrefs.GetInt($"{modeKey}_RecordCount", 0);
+
+    bool updated = false;
+
+    for (int i = 0; i < recordCount; i++)
+    {
+        string prefix = $"{modeKey}_Record_{i}";
+        string cls = PlayerPrefs.GetString($"{prefix}_Class", "");
+        string seat = PlayerPrefs.GetString($"{prefix}_Seat", "");
+        string name = PlayerPrefs.GetString($"{prefix}_Name", "");
+        float oldScore = PlayerPrefs.GetFloat($"{prefix}_Score", 0f);
+
+        string existingKey = $"{cls}-{seat}-{name}";
+
+        if (existingKey == userKey)
+        {
+            if (score > oldScore)
+            {
+                PlayerPrefs.SetFloat($"{prefix}_Score", score);
+                Debug.Log($"🔁 分數更新（{modeKey}）：{userKey} {oldScore:F2} → {score:F2}");
+            }
+            else
+            {
+                Debug.Log($"📌 分數未更新（{modeKey}）：{userKey}，舊分數更高");
+            }
+            updated = true;
+            break;
+        }
+    }
+
+    if (!updated)
+    {
+        string prefix = $"{modeKey}_Record_{recordCount}";
+        PlayerPrefs.SetString($"{prefix}_Class", classText);
+        PlayerPrefs.SetString($"{prefix}_Seat", seatText);
+        PlayerPrefs.SetString($"{prefix}_Name", nameText);
+        PlayerPrefs.SetFloat($"{prefix}_Score", score);
+        PlayerPrefs.SetInt($"{modeKey}_RecordCount", recordCount + 1);
+
+        Debug.Log($"✅ 新增成績（{modeKey}）：{userKey} - {score:F2}");
+    }
+
+    PlayerPrefs.Save();
+}
+
+
 
     public void Retry()
     {
