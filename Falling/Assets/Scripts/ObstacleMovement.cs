@@ -28,7 +28,7 @@ public class ObstacleMovement : MonoBehaviour
         if (GameManager.CurrentMode == "無盡")
         {
             baseSpeed = 5f;
-            maxExtraSpeed = 30f;
+            maxExtraSpeed = 23f;
         }
         else
         {

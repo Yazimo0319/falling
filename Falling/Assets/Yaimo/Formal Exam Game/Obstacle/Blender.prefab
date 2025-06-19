@@ -99,11 +99,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseSpeed: 5
-  maxExtraSpeed: 20
+  maxExtraSpeed: 17
   rotationSpeed: 180
-  minScale: 0.2
+  minScale: 0.29
   maxScale: 0.5
-  sizeSpeedEffect: 0.4
+  sizeSpeedEffect: 0.35
 --- !u!58 &1744363494446770392
 CircleCollider2D:
   m_ObjectHideFlags: 0

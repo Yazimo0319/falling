@@ -145,11 +145,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseSpeed: 5
-  maxExtraSpeed: 20
+  maxExtraSpeed: 17
   rotationSpeed: 180
   minScale: 0.28
   maxScale: 0.5
-  sizeSpeedEffect: 0.4
+  sizeSpeedEffect: 0.35
 --- !u!114 &3504026157720452593
 MonoBehaviour:
   m_ObjectHideFlags: 0
