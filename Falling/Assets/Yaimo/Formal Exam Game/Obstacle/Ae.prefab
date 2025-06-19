@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1373141112393734173}
   - component: {fileID: 3114328304347726267}
   - component: {fileID: 5115446033060047266}
+  - component: {fileID: 3967857756502561234}
   m_Layer: 0
   m_Name: Ae
   m_TagString: Obstacle
@@ -149,3 +150,15 @@ MonoBehaviour:
   minScale: 0.28
   maxScale: 0.5
   sizeSpeedEffect: 0.4
+--- !u!114 &3967857756502561234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8908516190214719418}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d773e89f2245d14788919a4608a996e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

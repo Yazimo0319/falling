@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Application.targetFrameRate = 60;
+
         CurrentMode = PlayerPrefs.GetString("CurrentMode", "限時");
         timeRemaining = gameDuration;
         timer = 0f;

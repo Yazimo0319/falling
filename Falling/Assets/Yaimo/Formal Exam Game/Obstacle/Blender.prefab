@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4798718989604284244}
   - component: {fileID: 7456507255181888391}
-  - component: {fileID: 2589443610148256848}
   - component: {fileID: 4985215901290074402}
+  - component: {fileID: 1744363494446770392}
   m_Layer: 0
   m_Name: Blender
   m_TagString: Untagged
@@ -86,8 +86,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &2589443610148256848
-BoxCollider2D:
+--- !u!114 &4985215901290074402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553394644915025983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aa97d18820a54b42a72620c86b1706b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseSpeed: 5
+  maxExtraSpeed: 20
+  rotationSpeed: 180
+  minScale: 0.2
+  maxScale: 0.5
+  sizeSpeedEffect: 0.4
+--- !u!58 &1744363494446770392
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -119,33 +137,5 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10.8, y: 10.8}
-    newSize: {x: 6, y: 6}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.12, y: 5.12}
-  m_EdgeRadius: 0
---- !u!114 &4985215901290074402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 553394644915025983}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aa97d18820a54b42a72620c86b1706b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseSpeed: 5
-  maxExtraSpeed: 20
-  rotationSpeed: 180
-  minScale: 0.2
-  maxScale: 0.5
-  sizeSpeedEffect: 0.4
+  m_Radius: 2.22

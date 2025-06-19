@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2548993725247629978}
   - component: {fileID: 3658247068666217124}
   - component: {fileID: 8734410365873614645}
+  - component: {fileID: 5916171721202698588}
   m_Layer: 0
   m_Name: Id
   m_TagString: Obstacle
@@ -149,3 +150,15 @@ MonoBehaviour:
   minScale: 0.28
   maxScale: 0.5
   sizeSpeedEffect: 0.4
+--- !u!114 &5916171721202698588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339353315255607071}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d773e89f2245d14788919a4608a996e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
